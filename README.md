@@ -1,85 +1,75 @@
 # iview-filter-table
 
-> 一个基于iView Table 的带搜索过滤的Table组件, 支持 `Input`输入框 和  `Select`下拉框两种表格筛选方式.
+> 一个基于iView Table 的带搜索过滤的Table组件, 支持 `Input`输入框 和  `Select`下拉框 `DatePicker`日期选择  `region`范围选择 等表格筛选方式.
 
-![project.gif](https://github.com/azhengyongqin/iview-filter-table/blob/master/public/image/project.gif)
+由于我进行的这个项目后台使用node进行编写，用的Sequelize.js,并且前后端使用了子模块进行对字段的通用处理, 所以tableColumns中的某些字段前端是用不到的，但是node需要用到，所以我就没有对字段进行删减
+
 
 ## 使用
 **模板**：
 ```html
-<filter-table @on-search="onSearch"
-              :data="users"
-              :columns="tableColumns">
-</filter-table>
+<FilterTable @on-search="onSearch"
+  :data="users"
+  :columns="tableColumns">
+</FilterTable>
 ```
 **列描述数据对象：**
 ```js
 tableColumns: [
   {
-    title: '用户名',
-    key: 'username',
-    filter: {
-      type: 'Input' //输入框过滤
-    }
-  },
-  {
-    title: '状态',
-    key: 'status',
-    filter: {
-      type: 'Select',//下拉框过滤
-      option: userStatus //下拉框选项数据对象
-    }
-  }
+      'key': 'id',
+      'title': 'ID',
+      'comment': '编号',
+      'type': 'integer',
+      'primaryKey': true,
+      'autoIncrement': true,
+      'fixed': 'left',
+      'minWidth': 150,
+      'component': 'common',
+      'searchRule': 'in',
+      'align': 'center',
+      'time': false,
+      'show': true,
+      'searchable': true,
+    },{
+      'key': 'userId',
+      'title': '用户ID',
+      'comment': '信息归属用户id',
+      'type': 'integer',
+      'allowNull': false,
+      'minWidth': 150,
+      'component': 'common',
+      'searchRule': 'in',
+      'filter': {
+          'type': 'Input',
+      },
+      'align': 'center',
+      'time': false,
+      'show': true,
+      'searchable': true,
+    },
 ]
-```
-**下拉框选项数据格式：**
-```js
-  const userStatus = {
-    0: {
-      value: 0,
-      name: '全部'
-    },
-    1: {
-      value: 1,
-      name: '已锁定',
-      color: 'red'
-    },
-    2: {
-      value: 2,
-      name: '正常',
-      color: 'green'
-    },
-  };
-```
-**触发搜索事件：**
 
-```js
-onSearch(search) {
-  //模拟数据库查询数据
-  //这个search应该是传到后台,然后台来根据条件查询数据库
-  alert('查询条件：'+JSON.stringify(search,null,4));
-}
 ```
 
-在该方法中进行条件过滤，更新组件 `data` 属性的值。
+
+
 
 直接运行该项目可以看当前组件的Example效果。
 
-![project.gif](https://github.com/azhengyongqin/iview-filter-table/blob/master/public/image/filterTable.gif)
-
 ## Project setup
 ```
-yarn install
+yarn install | npm install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn run serve
+yarn run serve | npm run serve
 ```
 
 ### Compiles and minifies for production
 ```
-yarn run build
+yarn run build | npm run build
 ```
 
 ### Run your tests
@@ -95,5 +85,7 @@ yarn run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-**Github源码地址**
+## 原作者源码地址 
+  这是我在项目中有这个需求时,在git上找到了这个git 但是他的这个组件有一个bug，因为我参照的这个组件是使用2个iview 的Table 组件进行拼接得到的,但是在数据字段过长是,表头跟内容区域会出现2个滚动条。 所以我在原作者的基础上, 使用iview 的Table 组件的children参数进行再次改写
+**原作者的 Github源码地址**
 https://github.com/azhengyongqin/iview-filter-table
